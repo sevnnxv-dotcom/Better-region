@@ -22,12 +22,11 @@ import org.lwjgl.glfw.GLFW;
 public class BetterMS implements ClientModInitializer {
 
     private int lastSlot = -1;
-    private boolean isEnabled = true; // الحالة الافتراضية للمود
+    private boolean isEnabled = true;
     private static KeyBinding toggleKeyBinding;
 
     @Override
     public void onInitializeClient() {
-        // تسجيل زر F12 في إعدادات اللعبة
         toggleKeyBinding = KeyBindingHelper.registerKeyBinding(new KeyBinding(
                 "key.betterms.toggle",
                 InputUtil.Type.KEYSYM,
@@ -38,11 +37,9 @@ public class BetterMS implements ClientModInitializer {
         ClientTickEvents.END_CLIENT_TICK.register(client -> {
             if (client.player == null || client.world == null) return;
 
-            // الفحص عند الضغط على زر F12
             while (toggleKeyBinding.wasPressed()) {
                 isEnabled = !isEnabled;
                 
-                // إرسال إشعار للمناقشة/الشات بحالة المود
                 if (isEnabled) {
                     client.player.sendMessage(Text.literal("[Better MS] ").formatted(Formatting.GOLD)
                             .append(Text.literal("ENABLED").formatted(Formatting.GREEN)), true);
@@ -52,7 +49,6 @@ public class BetterMS implements ClientModInitializer {
                 }
             }
 
-            // إذا كان المود مفعلاً نطبق ميزة الضرب التلقائي
             if (isEnabled) {
                 int currentSlot = client.player.getInventory().selectedSlot;
 
